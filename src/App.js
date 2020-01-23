@@ -1,13 +1,22 @@
 import React, { useState } from 'react'
 
 import { ThemeProvider } from './context/ThemeContext'
-import { DefaultTheme } from './theme'
+import { ThemeList } from './themes'
 
 import Home from './components/Home'
 
 const App = () => {
 
-	const theme = useState(DefaultTheme)
+	const getUserTheme = () => {
+		let userTheme = ThemeList.filter( theme => theme.isDefault )[0]
+		const lsTheme = localStorage.getItem("userTheme")
+		if (lsTheme)
+			userTheme = ThemeList.filter( theme => theme.label.toLowerCase() === lsTheme.toLowerCase() )[0]
+
+		return userTheme.theme
+	}
+
+	const theme = useState(getUserTheme())
 
 	return (
 		<ThemeProvider value={theme}>
